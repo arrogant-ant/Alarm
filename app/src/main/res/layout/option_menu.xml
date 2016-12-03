@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_marginStart="0dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bgColor"
+    android:layout_marginEnd="0dp">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Alarm"
+        android:id="@+id/alarm"
+        android:layout_weight="1"
+        android:background="@color/bgColor"
+        android:textColor="#fff"
+        android:onClick="openAlarm"/>
+
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Remiders"
+        android:id="@+id/reminders"
+        android:background="@color/bgColor"
+        android:textColor="#fff"
+        android:layout_weight="1"
+        />
+</LinearLayout>
