@@ -41,7 +41,7 @@ public class AlarmToneService extends Service{
         mediaPlayer.start();
 
 
-        return START_NOT_STICKY;
+        return START_REDELIVER_INTENT;
 
 
     }

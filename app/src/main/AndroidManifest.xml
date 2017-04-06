@@ -20,14 +20,12 @@
             android:name=".AddAlarm"
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-
-        <receiver android:name=".AlarmReciever"/>
         <receiver android:name=".StopAlarm"/>
         <service android:name=".AlarmToneService"
             android:enabled="true"
             android:stopWithTask="false"
             />
-        <service android:name=".RepititionService"
+        <service android:name=".AlarmService"
             android:enabled="true"/>
 
     </application>

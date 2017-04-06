@@ -1,7 +1,5 @@
 package com.example.sabita_sant.alarm;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,14 +19,14 @@ public class AddAlarm extends AppCompatActivity{
     private TimePicker timePicker;
     private TextView time;
     private String format;
-    PendingIntent pendingIntent;
     static StringBuilder AlarmText;
-    AlarmManager alarmManager;
+
     Calendar calendar = Calendar.getInstance();
     private static AddAlarm inst;
     private static Intent alarm_intent;
     SharedPreferences sharedPreferences;
     private static int no_rep=0;       //counts the no of repetion days
+    AlarmService alarmService;
 
 
     @Override
@@ -45,11 +43,14 @@ public class AddAlarm extends AppCompatActivity{
         setContentView(R.layout.activity_add_alarm);
         timePicker= (TimePicker) findViewById(R.id.timePicker);
         time= (TextView)findViewById(R.id.showtime);
-        alarmManager= (AlarmManager)getSystemService(ALARM_SERVICE);
-//        alarmTime(hour,min);
-        alarm_intent = new Intent(AddAlarm.this,AlarmToneService.class);
+        alarmTime(hour,min);
+        alarmService = AlarmService.instance();
+        alarm_intent = new Intent(AddAlarm.this, AlarmService.class);
     }
+    public static AddAlarm instance() {
 
+        return inst;
+    }
     //converts 24h to 12h
     public void alarmTime(int hour, int min) {
         Toast.makeText(this,"inside alarm Time",Toast.LENGTH_LONG).show();
@@ -84,30 +85,20 @@ public class AddAlarm extends AppCompatActivity{
         calendar.set(Calendar.MINUTE, min);
 
         alarmTime(calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE));
+        startService(alarm_intent);
 
-     //   intent to Alarm Receiver
-        pendingIntent=PendingIntent.getService(AddAlarm.this,0,alarm_intent,0);
-        if(no_rep==0)
-            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-        else
-        {
-            this.startService(new Intent(this,RepititionService.class));
-        }
 
 
 
     }
 
-    public static AddAlarm instance() {
 
-        return inst;
-    }
 
     void stopAlarm()
     {
         Toast.makeText(inst.getApplicationContext(),"inside stopAlarm ",Toast.LENGTH_SHORT).show();
 
-        alarmManager.cancel(pendingIntent);
+        alarmService.alarmManager.cancel(alarmService.pendingIntent);
 
         AlarmToneService.ServiceInst.mediaPlayer.stop();
 

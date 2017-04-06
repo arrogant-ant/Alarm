@@ -26,7 +26,7 @@ public class RepititionService extends Service {
     }
 
     AddAlarm ins;
-    @Override
+/*    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         ins=AddAlarm.instance();
         t=new Timer();
@@ -53,5 +53,5 @@ public class RepititionService extends Service {
 
 
         return START_NOT_STICKY;
-    }
+    }*/
 }
