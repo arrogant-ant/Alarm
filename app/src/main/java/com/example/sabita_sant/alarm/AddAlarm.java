@@ -1,5 +1,7 @@
 package com.example.sabita_sant.alarm;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,6 +31,7 @@ public class AddAlarm extends AppCompatActivity{
     AlarmService alarmService;
 
 
+
     @Override
     public void onStart() {
         super.onStart();
@@ -42,13 +45,12 @@ public class AddAlarm extends AppCompatActivity{
         sharedPreferences= getSharedPreferences("Repetition", Context.MODE_PRIVATE);
         setContentView(R.layout.activity_add_alarm);
         timePicker= (TimePicker) findViewById(R.id.timePicker);
-        time= (TextView)findViewById(R.id.showtime);
+        time = (TextView)findViewById(R.id.showtime);
         alarmTime(hour,min);
         alarmService = AlarmService.instance();
         alarm_intent = new Intent(AddAlarm.this, AlarmService.class);
     }
     public static AddAlarm instance() {
-
         return inst;
     }
     //converts 24h to 12h
@@ -85,23 +87,21 @@ public class AddAlarm extends AppCompatActivity{
         calendar.set(Calendar.MINUTE, min);
 
         alarmTime(calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE));
-        startService(alarm_intent);
+        Intent intent= new Intent(AddAlarm.this,AlarmReceiver.class);
+        PendingIntent pendingIntent= PendingIntent.getBroadcast(AddAlarm.this,0,intent,0);
 
-
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
 
 
     }
 
 
 
+    //stops alarm
     void stopAlarm()
     {
-        Toast.makeText(inst.getApplicationContext(),"inside stopAlarm ",Toast.LENGTH_SHORT).show();
-
-        alarmService.alarmManager.cancel(alarmService.pendingIntent);
-
-        AlarmToneService.ServiceInst.mediaPlayer.stop();
-
+       startActivity(new Intent(AddAlarm.this,ArithTest.class));
     }
     //prints alarm time
     public void setAlarmText(String s)
@@ -151,4 +151,6 @@ public class AddAlarm extends AppCompatActivity{
         editor.apply();
 
     }
+
+
 }

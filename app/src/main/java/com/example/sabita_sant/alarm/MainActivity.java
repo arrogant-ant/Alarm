@@ -1,41 +1,52 @@
 package com.example.sabita_sant.alarm;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
 
+    float touch,release;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_clock);
-
-
-        if(savedInstanceState== null)
-        {
-            getFragmentManager().beginTransaction().add(R.id.menuContainer ,new OptionMenu()).commit();
-            getFragmentManager().beginTransaction().add(R.id.alarmContainer ,new AlarmList()).commit();
-        }
+        setContentView(R.layout.activity_main);
+        getFragmentManager().beginTransaction().replace(R.id.clkContainer,new Analog()).commit();
+        ViewGroup viewGroup= (ViewGroup) findViewById(R.id.parent);
+        viewGroup.setOnTouchListener(this);
     }
 
-    public void openAlarm(View v) {
 
-        Toast.makeText(getApplicationContext(), "In open Alarm",Toast.LENGTH_SHORT).show();
-        getFragmentManager().beginTransaction().replace(R.id.menuContainer ,new OptionMenu()).commit();
-        getFragmentManager().beginTransaction().replace(R.id.alarmContainer, new AlarmList()).commit();
-    }
 
     public void addAlarm(View v)
     {
         Intent intent=new Intent(getApplicationContext(),AddAlarm.class);
         startActivity(intent);
     }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if(event.getAction()==MotionEvent.ACTION_DOWN)
+            touch=event.getY();
+        if(event.getAction()==MotionEvent.ACTION_UP)
+            release=event.getY();
+        {
+
+            if(release>touch)
+                getFragmentManager().beginTransaction().replace(R.id.clkContainer,new Analog()).commit();
+            else
+                getFragmentManager().beginTransaction().replace(R.id.clkContainer,new Digital()).commit();
+        }
+
+        return true;
+    }
+
 
 }

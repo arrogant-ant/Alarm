@@ -6,8 +6,12 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarStyle">@style/CustomActionBar</item>
     </style>
-
+    <style name="CustomActionBar" parent="android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/bgColor</item>
+      <!--  <item name="android:textColor">@android:color/white</item>  -->
+    </style>
     <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
