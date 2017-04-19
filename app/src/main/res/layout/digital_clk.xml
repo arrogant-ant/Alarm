@@ -14,5 +14,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:background="@color/bgColor"
-        android:textColor="#fff"/>
+        android:textColor="#fff"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"/>
 </RelativeLayout>

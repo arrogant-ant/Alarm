@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
 
     float touch,release;
+    RecentAlarmAdapter recent;
+    DbAdapter dbAdapter;
 
 
     @Override
@@ -21,6 +24,12 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         getFragmentManager().beginTransaction().replace(R.id.clkContainer,new Analog()).commit();
         ViewGroup viewGroup= (ViewGroup) findViewById(R.id.parent);
         viewGroup.setOnTouchListener(this);
+
+        recent= new RecentAlarmAdapter(this,R.layout.recent_row);
+        ListView listView= (ListView) findViewById(R.id.listview_alarm);
+        listView.setAdapter(recent);
+        dbAdapter=new DbAdapter(this);
+        dbAdapter.getAll();
     }
 
 

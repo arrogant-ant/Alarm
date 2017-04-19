@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/timePicker"
-
+            android:padding="3dp"
 
           />
 
@@ -46,7 +46,13 @@
         android:layout_centerHorizontal="true"
         android:text="Set Alarm"
         android:onClick="setAlarm"
-        android:id="@+id/button" />
+        android:id="@+id/button"
+        android:background="@color/bgColor"
+        android:textColor="@android:color/white"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:textStyle="bold"/>
+
 
     <TextView
         android:layout_width="wrap_content"

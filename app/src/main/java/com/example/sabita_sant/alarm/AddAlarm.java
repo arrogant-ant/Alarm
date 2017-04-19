@@ -29,6 +29,7 @@ public class AddAlarm extends AppCompatActivity{
     SharedPreferences sharedPreferences;
     private static int no_rep=0;       //counts the no of repetion days
     AlarmService alarmService;
+    String alarm_time;
 
 
 
@@ -85,15 +86,19 @@ public class AddAlarm extends AppCompatActivity{
         min=timePicker.getCurrentMinute();
         calendar.set(Calendar.HOUR_OF_DAY,hour);
         calendar.set(Calendar.MINUTE, min);
-
+        alarm_time= hour+":"+min;
         alarmTime(calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE));
         Intent intent= new Intent(AddAlarm.this,AlarmReceiver.class);
         PendingIntent pendingIntent= PendingIntent.getBroadcast(AddAlarm.this,0,intent,0);
 
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
-
-
+        DbAdapter adapter = new DbAdapter(AddAlarm.this);
+        long l= adapter.insert(alarm_time,"true");
+        if(l>0)
+            Toast.makeText(AddAlarm.this,"inserted "+alarm_time,Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(AddAlarm.this,"NOT inserted "+alarm_time,Toast.LENGTH_SHORT).show();
     }
 
 
