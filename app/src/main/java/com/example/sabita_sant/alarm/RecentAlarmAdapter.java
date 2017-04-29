@@ -3,12 +3,14 @@ package com.example.sabita_sant.alarm;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +29,20 @@ public class RecentAlarmAdapter extends ArrayAdapter<RecentAlarmRes> {
     public void add(RecentAlarmRes object) {
         super.add(object);
         list.add(object);
+        Log.e("size", String.valueOf(list.size()));
+    }
+
+    @Override
+    public void clear() {
+        super.clear();
+        list.clear();
     }
 
     @Override
     public int getCount() {
+
         return list.size();
+
     }
 
     @Nullable

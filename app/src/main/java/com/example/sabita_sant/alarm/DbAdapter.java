@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -30,13 +31,12 @@ public class DbAdapter {
         return db.insert(DbHelper.TABLE_NAME,null,contentValues);
 
     }
-    public void getAll(){
+    public void getAll(RecentAlarmAdapter adapter){
 
         SQLiteDatabase db= helper.getWritableDatabase();
         String[] columns={DbHelper.TIME,DbHelper.STATUS};
         Cursor cursor=db.query(DbHelper.TABLE_NAME,columns,null,null,null,null,null);
         RecentAlarmRes recent;
-        RecentAlarmAdapter adapter=new RecentAlarmAdapter(context,R.layout.recent_row);
         while (cursor.moveToNext())
         {
 
@@ -44,8 +44,6 @@ public class DbAdapter {
             String status=cursor.getString(1);
             recent=new RecentAlarmRes(time,status);
             adapter.add(recent);
-            Toast.makeText(context,"fetching data "+recent,Toast.LENGTH_SHORT).show();
-
         }
     }
 
