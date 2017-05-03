@@ -29,7 +29,7 @@ public class DbAdapter {
         return db.insert(DbHelper.TABLE_NAME,null,contentValues);
 
     }
-    public Cursor getAll(RecentAlarmAdapter adapter){
+    public Cursor getAll(){
 
         SQLiteDatabase db= helper.getWritableDatabase();
         String[] columns={DbHelper.TIME,DbHelper.DISMISS};

@@ -2,6 +2,7 @@ package com.example.sabita_sant.alarm;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,14 +14,18 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
 
     float touch,release;
     RecentAlarmAdapter recent;
     DbAdapter dbAdapter;
-
-    ListView listView;
+    GraphView graph;
+    LineGraphSeries<DataPoint> alarm_time,dismiss_time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,59 +36,41 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         getFragmentManager().beginTransaction().replace(R.id.clkContainer,new Analog()).commit();
         ViewGroup viewGroup= (ViewGroup) findViewById(R.id.parent);
         viewGroup.setOnTouchListener(this);
-
-        recent= new RecentAlarmAdapter(this,R.layout.recent_row);
+        graph= (GraphView) findViewById(R.id.graph);
         dbAdapter=new DbAdapter(this);
-        listView= (ListView) findViewById(R.id.listview_alarm);
-        listView.setAdapter(recent);
-
-        listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.e("item","selected");
-                Toast.makeText(MainActivity.this,"selected",Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(MainActivity.this,"item clicked",Toast.LENGTH_SHORT).show();
-                Log.e("item","click");
-                AlertDialog.Builder builder= new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Remove")
-                        .setMessage("Are you sure to remove alarm ")
-                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                            }
-                        })
-                        .setNegativeButton("Cancel",null);
-                builder.show();
-                return true;
-
-            }
- 
-
-        });
-
+        alarm_time= new LineGraphSeries<DataPoint>(getAlarmTime());
+        dismiss_time=new LineGraphSeries<DataPoint>(getDismissTime());
+        graph.addSeries(alarm_time);
+        graph.addSeries(dismiss_time);
 
 
     }
 
+    private DataPoint[] getDismissTime() {
+        Cursor cursor=dbAdapter.getAll();
+        DataPoint[] data =new DataPoint[cursor.getCount()];
+        for(int i=0;i<cursor.getCount();i++)
+        {
+            cursor.moveToNext();
+            data[i]=new DataPoint(i,cursor.getLong(0));
+        }
+        return data;
 
+    }
+    private DataPoint[] getAlarmTime() {
+        Cursor cursor=dbAdapter.getAll();
+        DataPoint[] data =new DataPoint[cursor.getCount()];
+        for(int i=0;i<cursor.getCount();i++)
+        {
+            cursor.moveToNext();
+            data[i]=new DataPoint(i,cursor.getLong(1));
+        }
+        return data;
+    }
     @Override
     protected void onResume() {
         super.onResume();
-        recent.clear();
-        dbAdapter.getAll(recent);
+
 
 
     }
