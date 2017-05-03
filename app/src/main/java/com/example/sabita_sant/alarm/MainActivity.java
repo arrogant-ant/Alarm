@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     RecentAlarmAdapter recent;
     DbAdapter dbAdapter;
 
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +34,28 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         recent= new RecentAlarmAdapter(this,R.layout.recent_row);
         dbAdapter=new DbAdapter(this);
-        ListView listView= (ListView) findViewById(R.id.listview_alarm);
+        listView= (ListView) findViewById(R.id.listview_alarm);
         listView.setAdapter(recent);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.e("item","selected");
+                Toast.makeText(MainActivity.this,"selected",Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(MainActivity.this,"item clicked",Toast.LENGTH_SHORT).show();
+                Log.e("item","click");
                 AlertDialog.Builder builder= new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Remove")
                         .setMessage("Are you sure to remove alarm ")
@@ -49,11 +67,17 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                         })
                         .setNegativeButton("Cancel",null);
                 builder.show();
+                return true;
+
             }
+ 
 
         });
 
+
+
     }
+
 
     @Override
     protected void onResume() {

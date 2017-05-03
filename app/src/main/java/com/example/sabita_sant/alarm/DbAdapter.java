@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-import android.widget.Toast;
 
 /**
  * Created by Sabita_Sant on 16/04/17.
@@ -22,29 +20,30 @@ public class DbAdapter {
 
     }
 
-    long insert(String time, String status)
+    long insert(String time, String dismiss)
     {
         SQLiteDatabase db=helper.getWritableDatabase();
         ContentValues contentValues= new ContentValues();
         contentValues.put(DbHelper.TIME,time);
-        contentValues.put(DbHelper.STATUS,status);
+        contentValues.put(DbHelper.DISMISS,dismiss);
         return db.insert(DbHelper.TABLE_NAME,null,contentValues);
 
     }
-    public void getAll(RecentAlarmAdapter adapter){
+    public Cursor getAll(RecentAlarmAdapter adapter){
 
         SQLiteDatabase db= helper.getWritableDatabase();
-        String[] columns={DbHelper.TIME,DbHelper.STATUS};
+        String[] columns={DbHelper.TIME,DbHelper.DISMISS};
         Cursor cursor=db.query(DbHelper.TABLE_NAME,columns,null,null,null,null,null);
-        RecentAlarmRes recent;
-        while (cursor.moveToNext())
-        {
-
-            String time=cursor.getString(0);
-            String status=cursor.getString(1);
-            recent=new RecentAlarmRes(time,status);
-            adapter.add(recent);
-        }
+//        RecentAlarmRes recent;
+//        while (cursor.moveToNext())
+//        {
+//
+//            String time=cursor.getString(0);
+//            String status=cursor.getString(1);
+//            recent=new RecentAlarmRes(time,status);
+//            adapter.add(recent);
+//        }
+        return cursor;
     }
 
 
@@ -54,7 +53,8 @@ public class DbAdapter {
         private static final String TABLE_NAME = "RecentAlarmRes";
         private static final int DB_VERSION = 1;
         private static final String TIME = "Time";
-        private static final String STATUS = "Status";
+        private static final String DISMISS = "Dismiss";
+
 
         public DbHelper(Context context) {
             super(context, DB_NAME, null, DB_VERSION);
@@ -62,13 +62,14 @@ public class DbAdapter {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            String create = "CREATE TABLE " + TABLE_NAME + "(" + TIME + " VARCHAR(15)," + STATUS + "  VARCHAR(10));";
+            String create = "CREATE TABLE " + TABLE_NAME + "(" + TIME + " VARCHAR(15)," + DISMISS + "  VARCHAR(10));";
             db.execSQL(create);
 
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            onCreate(db);
 
         }
     }

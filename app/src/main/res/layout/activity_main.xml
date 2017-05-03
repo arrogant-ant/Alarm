@@ -21,10 +21,13 @@
     <ListView
         android:id="@+id/listview_alarm"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_below="@id/clkContainer">
 
     </ListView>
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <ImageButton
         android:id="@+id/addBtn"

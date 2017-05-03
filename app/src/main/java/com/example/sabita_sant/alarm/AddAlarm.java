@@ -89,17 +89,12 @@ public class AddAlarm extends AppCompatActivity{
         alarm_time= hour+":"+min;
         alarmTime(calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE));
         Intent intent= new Intent(AddAlarm.this,AlarmReceiver.class);
+        intent.putExtra("time",calendar.getTimeInMillis());
         PendingIntent pendingIntent= PendingIntent.getBroadcast(AddAlarm.this,0,intent,0);
-
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
-        DbAdapter adapter = new DbAdapter(AddAlarm.this);
-        long l= adapter.insert(alarm_time,"true");
-        if(l>0)
-            Toast.makeText(AddAlarm.this,"inserted "+alarm_time,Toast.LENGTH_SHORT).show();
-        else
-            Toast.makeText(AddAlarm.this,"NOT inserted "+alarm_time,Toast.LENGTH_SHORT).show();
-    }
+
+   }
 
 
 
@@ -108,54 +103,44 @@ public class AddAlarm extends AppCompatActivity{
     {
        startActivity(new Intent(AddAlarm.this,ArithTest.class));
     }
-    //prints alarm time
-    public void setAlarmText(String s)
-    {
-        time.setText(s);
-    }
 
-    //onclick off button
-    public void alarmoff(View view) {
-        stopAlarm();
-    }
-
-    //marks the repetition days
-    public void selectRepetition(View view) {
-        boolean checked= ((CheckBox)view).isChecked();
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        if (checked)
-            no_rep++;
-        else
-            no_rep--;
-
-        //update repition day
-        switch (view.getId())
-        {
-            case R.id.monBox:
-                editor.putBoolean("Mon",checked);
-                break;
-            case R.id.tueBox:
-                editor.putBoolean("Tue",checked);
-                break;
-            case R.id.wedBox:
-                editor.putBoolean("Wed",checked);
-                break;
-            case R.id.thuBox:
-                editor.putBoolean("Thu",checked);
-                break;
-            case R.id.friBox:
-                editor.putBoolean("Fri",checked);
-                break;
-            case R.id.satBox:
-                editor.putBoolean("Sat",checked);
-                break;
-            case R.id.sunBox:
-                editor.putBoolean("Sun",checked);
-                break;
-        }
-        editor.apply();
-
-    }
+//    //marks the repetition days
+//    public void selectRepetition(View view) {
+//        boolean checked= ((CheckBox)view).isChecked();
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        if (checked)
+//            no_rep++;
+//        else
+//            no_rep--;
+//
+//        //update repition day
+//        switch (view.getId())
+//        {
+//            case R.id.monBox:
+//                editor.putBoolean("Mon",checked);
+//                break;
+//            case R.id.tueBox:
+//                editor.putBoolean("Tue",checked);
+//                break;
+//            case R.id.wedBox:
+//                editor.putBoolean("Wed",checked);
+//                break;
+//            case R.id.thuBox:
+//                editor.putBoolean("Thu",checked);
+//                break;
+//            case R.id.friBox:
+//                editor.putBoolean("Fri",checked);
+//                break;
+//            case R.id.satBox:
+//                editor.putBoolean("Sat",checked);
+//                break;
+//            case R.id.sunBox:
+//                editor.putBoolean("Sun",checked);
+//                break;
+//        }
+//        editor.apply();
+//
+//    }
 
 
 }

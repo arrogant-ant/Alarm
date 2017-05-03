@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,7 +54,7 @@ public class RecentAlarmAdapter extends ArrayAdapter<RecentAlarmRes> {
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View row;
         row=convertView;
         Holder holder;
@@ -73,6 +74,15 @@ public class RecentAlarmAdapter extends ArrayAdapter<RecentAlarmRes> {
         holder.time_tx.setText(recent.getTime());
         if(recent.getStatus().equals("true"))
             holder.status_sw.setChecked(true);
+        else
+            holder.status_sw.setChecked(false);
+
+        holder.status_sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Toast.makeText(getContext(),"pos "+position,Toast.LENGTH_SHORT).show();
+            }
+        });
         return row;
     }
 

@@ -21,7 +21,9 @@ public class AlarmReceiver extends BroadcastReceiver {
     NotificationManager notificationManager;
     MediaPlayer mediaPlayer;
     Context c;
+    String time;
     static AlarmReceiver ins;
+    AddAlarm addAlarm=new AddAlarm();
     AlarmReceiver()
     {
         ins= this;
@@ -30,15 +32,19 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         c=context;
         notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-        showNotification(context,"Alarm", "IT'S " + AddAlarm.AlarmText, "tap to snooze");
-
+        showNotification(context,"Alarm", "IT'S " + AddAlarm.AlarmText, "tap to stop");
+        time=intent.getExtras().get("time").toString();
         mediaPlayer = MediaPlayer.create(context, R.raw.tone1);
-        mediaPlayer.start();
+        //addAlarm.stopAlarm();
+
+        //context.startActivity(new Intent(context,ArithTest.class));
     }
 
     private void showNotification(Context context,String alert,String title, String msg)
     {
-        PendingIntent pending_back= PendingIntent.getActivity(context,0,new Intent(context,StopAlarm.class),PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent arith=new Intent(context,ArithTest.class);
+        arith.putExtra("time",time);
+        PendingIntent pending_back= PendingIntent.getActivity(context,0,arith,PendingIntent.FLAG_UPDATE_CURRENT);
         //configure Notifi
         NotificationCompat.Builder notiBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
                 .setTicker(alert)

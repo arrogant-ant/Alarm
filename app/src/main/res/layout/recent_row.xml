@@ -18,7 +18,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:id="@+id/switch_recent"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp"
+        android:focusable="false"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
