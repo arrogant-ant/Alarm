@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
-
-    <TextClock
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textClock"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textSize="70dp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:background="@color/bgColor"
-        android:textColor="#fff"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"/>
+  <TextClock
+      android:id="@+id/textClock"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true"
+      android:layout_centerVertical="true"
+      android:layout_gravity="center"
+      android:background="@color/bgColor"
+      android:gravity="center"
+      android:paddingBottom="10.0dip"
+      android:paddingTop="10.0dip"
+      android:textColor="#ffffffff"
+      android:textSize="70.0dip" />
 </RelativeLayout>

@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.sabita_sant.alarm">
-
-    <uses-sdk
-        android:minSdkVersion="19"
-        android:targetSdkVersion="19" />
+    package="com.example.sabita_sant.alarm" >
 
     <android:uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -12,12 +8,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/add_alarm"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
         <activity
-            android:name=".MainActivity">
+            android:name=".AddAlarm"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,15 +22,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddAlarm"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:name=".MainActivity"
+            android:parentActivityName=".AddAlarm" />
 
-        <receiver android:name=".StopAlarm" />
         <receiver android:name=".AlarmReceiver" />
 
-
-        <activity android:name=".ArithTest"></activity>
+        <activity android:name=".ArithTest" />
+        <activity
+            android:name=".Info"
+            android:label="@string/title_activity_info"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

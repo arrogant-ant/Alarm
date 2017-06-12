@@ -6,71 +6,66 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by Sabita_Sant on 16/04/17.
- */
+public class DbAdapter
+{
+  Context context;
+  DbHelper helper;
+  long offset = 330L;
+  
+  public DbAdapter(Context paramContext)
+  {
+    this.helper = new DbHelper(paramContext);
+    this.context = paramContext;
+  }
+  
+  public Cursor getAll()
+  {
+    return this.helper.getWritableDatabase().query("RecentAlarmRes", new String[] { "Time", "Dismiss" }, null, null, null, null, null);
+  }
+  
+  long insert(long paramLong1, long paramLong2)
+  {
+    long l1 = paramLong1 + this.offset;
+    long l2 = paramLong2 + this.offset;
+    SQLiteDatabase localSQLiteDatabase = this.helper.getWritableDatabase();
+    ContentValues localContentValues = new ContentValues();
+    localContentValues.put("Time", Long.valueOf(l1));
+    localContentValues.put("Dismiss", Long.valueOf(l2));
+    return localSQLiteDatabase.insert("RecentAlarmRes", null, localContentValues);
+  }
+  
+  static class DbHelper
+    extends SQLiteOpenHelper
+  {
+    private static final String DB_NAME = "Alarm";
+    private static final int DB_VERSION = 1;
+    private static final String DISMISS = "Dismiss";
+    private static final String TABLE_NAME = "RecentAlarmRes";
+    private static final String TIME = "Time";
 
-public class DbAdapter {
-    DbHelper helper;
-    Context context;
-
-    public DbAdapter(Context context) {
-        helper=new DbHelper(context);
-        this.context=context;
-
+    public DbHelper(Context context) {
+      super(context, DB_NAME, null, DB_VERSION);
     }
 
-    long insert(String time, String dismiss)
+    public void onCreate(SQLiteDatabase paramSQLiteDatabase)
     {
-        SQLiteDatabase db=helper.getWritableDatabase();
-        ContentValues contentValues= new ContentValues();
-        contentValues.put(DbHelper.TIME,time);
-        contentValues.put(DbHelper.DISMISS,dismiss);
-        return db.insert(DbHelper.TABLE_NAME,null,contentValues);
-
+      paramSQLiteDatabase.execSQL("CREATE TABLE"+TABLE_NAME+"("+TIME+"VARCHAR(15),"+DISMISS+"VARCHAR(10));");
     }
-    public Cursor getAll(){
-
-        SQLiteDatabase db= helper.getWritableDatabase();
-        String[] columns={DbHelper.TIME,DbHelper.DISMISS};
-        Cursor cursor=db.query(DbHelper.TABLE_NAME,columns,null,null,null,null,null);
-//        RecentAlarmRes recent;
-//        while (cursor.moveToNext())
-//        {
-//
-//            String time=cursor.getString(0);
-//            String status=cursor.getString(1);
-//            recent=new RecentAlarmRes(time,status);
-//            adapter.add(recent);
-//        }
-        return cursor;
+    
+    public void onUpgrade(SQLiteDatabase paramSQLiteDatabase, int paramInt1, int paramInt2)
+    {
+      paramSQLiteDatabase.execSQL("DROP TABLE IF EXISTS"+TABLE_NAME+";");
+      onCreate(paramSQLiteDatabase);
     }
-
-
-
-    static class DbHelper extends SQLiteOpenHelper {
-        private static final String DB_NAME = "Alarm";
-        private static final String TABLE_NAME = "RecentAlarmRes";
-        private static final int DB_VERSION = 1;
-        private static final String TIME = "Time";
-        private static final String DISMISS = "Dismiss";
-
-
-        public DbHelper(Context context) {
-            super(context, DB_NAME, null, DB_VERSION);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            String create = "CREATE TABLE " + TABLE_NAME + "(" + TIME + " VARCHAR(15)," + DISMISS + "  VARCHAR(10));";
-            db.execSQL(create);
-
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            onCreate(db);
-
-        }
-    }
+  }
 }
+
+
+
+/* Location:           C:\Users\Sabita_Sant\Desktop\Alarm\dex2jar-0.0.9.15\classes_dex2jar.jar
+
+ * Qualified Name:     com.example.sabita_sant.alarm.DbAdapter
+
+ * JD-Core Version:    0.7.0.1
+
+ */

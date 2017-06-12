@@ -11,13 +11,13 @@ import android.view.ViewGroup;
  */
 public class Digital extends Fragment {
 
-    public Digital(){
+  public Digital(){
 
-    }
-    @Override
+  }
+  @Override
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.digital_clk,container,false);
-    }
+    return inflater.inflate(R.layout.digital_clk,container,false);
+  }
 }
