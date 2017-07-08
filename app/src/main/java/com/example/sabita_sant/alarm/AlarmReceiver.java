@@ -28,7 +28,7 @@ public class AlarmReceiver
                 .setTicker(alert)
                 .setContentTitle(title)
                 .setContentText(msg)
-                .setSmallIcon(R.drawable.check_box)
+                .setSmallIcon(R.drawable.icon)
                 .addAction(R.drawable.snooze,"Snooze",pending_back);//change pending_back to snooze alarm
         notiBuilder.setContentIntent(pending_back);
         notiBuilder.setAutoCancel(true);

@@ -2,6 +2,7 @@ package com.example.sabita_sant.alarm;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.LegendRenderer;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -28,7 +31,7 @@ public class MainActivity
         DataPoint[] arrayOfDataPoint = new DataPoint[localCursor.getCount()];
         for (int i = 0; i < localCursor.getCount(); i++) {
             localCursor.moveToNext();
-            arrayOfDataPoint[i] = new DataPoint(i, localCursor.getLong(1));
+            arrayOfDataPoint[i] = new DataPoint(i, localCursor.getLong(0));
     }
         return arrayOfDataPoint;
     }
@@ -38,7 +41,7 @@ public class MainActivity
         DataPoint[] arrayOfDataPoint = new DataPoint[localCursor.getCount()];
         for (int i = 0; i < localCursor.getCount(); i++) {
             localCursor.moveToNext();
-            arrayOfDataPoint[i] = new DataPoint(i, localCursor.getLong(0));
+            arrayOfDataPoint[i] = new DataPoint(i, localCursor.getLong(1));
     }
         return arrayOfDataPoint;
     }
@@ -64,14 +67,33 @@ public class MainActivity
             }
         });
         this.dbAdapter = new DbAdapter(this);
+        //alarm_time series initialisation
         this.alarm_time = new LineGraphSeries(getAlarmTime());
-        this.alarm_time.setColor(-16776961);
+        this.alarm_time.setColor(Color.GREEN);
         this.alarm_time.setTitle("Alarm Time");
+        alarm_time.setDrawDataPoints(true);
+
+        //dismiss-time series initialisation
         this.dismiss_time = new LineGraphSeries(getDismissTime());
-        this.dismiss_time.setColor(-16711936);
+        this.dismiss_time.setColor(Color.BLUE);
         this.dismiss_time.setTitle("Dismiss Time");
+        dismiss_time.setDrawDataPoints(true);
+
+        //graph customization
         this.graph.addSeries(this.alarm_time);
         this.graph.addSeries(this.dismiss_time);
+        graph.getLegendRenderer().setVisible(true);
+        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Time");
+        graph.getViewport().setYAxisBoundsManual(true);
+        graph.getViewport().setMinY(0);
+        graph.getViewport().setMaxY(1440);
+       graph.getGridLabelRenderer().setNumVerticalLabels(17);
+        graph.getViewport().setScrollableY(true);
+//        StaticLabelsFormatter staticLabelsFormatter=new StaticLabelsFormatter(graph);
+//        staticLabelsFormatter.setVerticalLabels(new String[]{"2:00","4:00","6:00","8:00","10:00","12:00",
+//                "14:00","16:00","18:00","20:00","22:00","24:00"});
+//        graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
     }
 
     protected void onResume() {

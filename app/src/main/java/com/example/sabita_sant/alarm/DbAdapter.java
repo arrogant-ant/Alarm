@@ -38,7 +38,7 @@ public class DbAdapter
     extends SQLiteOpenHelper
   {
     private static final String DB_NAME = "Alarm";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     private static final String DISMISS = "Dismiss";
     private static final String TABLE_NAME = "RecentAlarmRes";
     private static final String TIME = "Time";
@@ -49,12 +49,12 @@ public class DbAdapter
 
     public void onCreate(SQLiteDatabase paramSQLiteDatabase)
     {
-      paramSQLiteDatabase.execSQL("CREATE TABLE"+TABLE_NAME+"("+TIME+"VARCHAR(15),"+DISMISS+"VARCHAR(10));");
+      paramSQLiteDatabase.execSQL("CREATE TABLE "+TABLE_NAME+" ( "+TIME+" VARCHAR(15),"+DISMISS+" VARCHAR(10));");
     }
     
     public void onUpgrade(SQLiteDatabase paramSQLiteDatabase, int paramInt1, int paramInt2)
     {
-      paramSQLiteDatabase.execSQL("DROP TABLE IF EXISTS"+TABLE_NAME+";");
+      paramSQLiteDatabase.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME+";");
       onCreate(paramSQLiteDatabase);
     }
   }

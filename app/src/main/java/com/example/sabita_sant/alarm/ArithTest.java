@@ -1,6 +1,7 @@
 package com.example.sabita_sant.alarm;
 
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -31,9 +32,7 @@ public class ArithTest
     int val1;
     int val2;
     MediaPlayer mediaPlayer;
-    MediaPlayer tone[] = new MediaPlayer[3];
-    boolean stopped = false;
-    private long timeCountInMilliSeconds = 15*1000;
+    private long timeCountInMilliSeconds = 90 * 1000;
     private CountDownTimer countDownTimer;
     private TimerStatus timerStatus = TimerStatus.STOPPED;
     private ProgressBar progressBarCircle;
@@ -51,23 +50,43 @@ public class ArithTest
         res = (EditText) findViewById(R.id.res);
         alert = (TextView) findViewById(R.id.alert_text);
         progressBarCircle = (ProgressBar) findViewById(R.id.progressBarCircle);
-
-        tone[0] = MediaPlayer.create(ArithTest.this, R.raw.tone1);
-        tone[1] = MediaPlayer.create(ArithTest.this, R.raw.tone2);
-        tone[2] = MediaPlayer.create(ArithTest.this, R.raw.tone3);
-        mediaPlayer = tone[(int) (Math.random() * 10 % 3)];
+        mediaPlayer = setPlayer(mediaPlayer);
         this.time = AddAlarm.ALARM_TIME;
         this.snooze_time = AddAlarm.snooze;
-        //tone_handler=new Handler();
 
         i = 0;
         set();
     }
 
+    // setup player
+    private MediaPlayer setPlayer(MediaPlayer player) {
+        switch ((int) Math.random() * 10 % 3) {
+            case 0:
+                player = MediaPlayer.create(ArithTest.this, R.raw.tone1);
+                break;
+            case 1:
+                player = MediaPlayer.create(ArithTest.this, R.raw.tone1);
+                break;
+            case 2:
+                player = MediaPlayer.create(ArithTest.this, R.raw.tone1);
+                break;
+            default:
+                player = MediaPlayer.create(ArithTest.this, R.raw.tone1);
+        }
+        player.start();
+        player.setVolume(1, 1);
+        player.setLooping(true);
+        return player;
+    }
+
     private void set() {
-        timerStatus = TimerStatus.STARTED;
+
+        if (timerStatus == TimerStatus.STARTED)
+            stopCountDownTimer();
+
         setProgressBarValues();
         startCountDownTimer();
+        timerStatus = TimerStatus.STARTED;
         i++;
         char op[] = {'+', '-', '*', '/'};
         int r = (int) (Math.random() * 10 % 4);
@@ -76,7 +95,8 @@ public class ArithTest
         op1.setText(String.valueOf(val1));
         val2 = (int) ((Math.random() * 100) % 16 + 1);
         op2.setText(String.valueOf(val2));
-        mediaPlayer.start();
+
+
         switch (r) {
             case 0:
                 result = String.valueOf((val1 + val2));
@@ -93,26 +113,18 @@ public class ArithTest
 
         }
         Toast.makeText(this, "res " + result, Toast.LENGTH_SHORT).show();
-//        try {
-//            Thread.sleep(10000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        if(mediaPlayer.isPlaying()&& !stopped)
-//        {
-//            mediaPlayer.stop();
-//            PendingIntent pendingIntent = PendingIntent.getBroadcast(ArithTest.this, 0, new Intent(ArithTest.this, AlarmReceiver.class), 0);
-//            ((AlarmManager) getSystemService(ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP, Calendar.MILLISECOND + 60000 * this.snooze_time, pendingIntent);
-//            finish();
-//        }
+
 
     }
 
-
+    //checks the entered result
     public void check(View paramView) {
         if (this.res.getText().toString().equals(this.result)) {
             mediaPlayer.stop();
-            stopped = true;
+            stopCountDownTimer();
+            timerStatus = TimerStatus.STOPPED;
+            NotificationManager notificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.cancelAll();
             this.dismiss = Calendar.getInstance().getTimeInMillis();
             this.time = (this.time % 86400000L / 60000L);
             this.dismiss = (this.dismiss % 86400000L / 60000L);
@@ -120,6 +132,9 @@ public class ArithTest
                 Toast.makeText(this, "inserted " + this.time + "  " + this.dismiss, Toast.LENGTH_SHORT).show();
             } else
                 Toast.makeText(ArithTest.this, "NOT inserted " + time, Toast.LENGTH_SHORT).show();
+            if (AddAlarm.repeat)
+                repeatAlarm();
+
             finish();
 
         } else {
@@ -128,28 +143,49 @@ public class ArithTest
                 this.alert.setText("Sorry!! " + (4 - this.i) + " more try left");
                 return;
             } else {
+                startCountDownTimer();
+                snooze();
 
-                stopped = true;
-                mediaPlayer.stop();
-                Toast.makeText(this, "ALARM SNOOZED FOR " + this.snooze_time + " MINS", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(ArithTest.this, AlarmReceiver.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(ArithTest.this, 0, intent, 0);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 60000 * snooze_time, pendingIntent);
-                finish();
             }
         }
     }
 
+    private void repeatAlarm() {
+        Toast.makeText(ArithTest.this, "alarm will  be repeated", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(ArithTest.this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(ArithTest.this, 0, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
+        int alarm_time = (int) time % 8640000;
+        int present_time = (int) Calendar.getInstance().getTimeInMillis() % 8640000;
+        if (alarm_time >= present_time) {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + alarm_time - present_time, pendingIntent);
 
+        } else {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() - (present_time - alarm_time) + 8640000, pendingIntent);
+        }
+        finish();
+    }
+
+    private void snooze() {
+        mediaPlayer.stop();
+        long time=Calendar.getInstance().getTimeInMillis() + 60000 * snooze_time;
+
+        Toast.makeText(this, "ALARM SNOOZED FOR " + this.snooze_time + " MINS", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(ArithTest.this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(ArithTest.this, 0, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,time, pendingIntent);
+
+        finish();
+    }
 
     /**
      * method to start count down timer
      */
     private void startCountDownTimer() {
 
-        countDownTimer = new CountDownTimer(timeCountInMilliSeconds,100) {
+        countDownTimer = new CountDownTimer(timeCountInMilliSeconds, 50) {
             @Override
             public void onTick(long millisUntilFinished) {
 
@@ -161,18 +197,25 @@ public class ArithTest
             public void onFinish() {
 
                 Toast.makeText(ArithTest.this,"Time up",Toast.LENGTH_SHORT).show();
-                timerStatus = TimerStatus.STOPPED;
+                if (timerStatus == TimerStatus.STARTED) {
+                    snooze();
+                    timerStatus = TimerStatus.STOPPED;
+                }
             }
 
         }.start();
         countDownTimer.start();
     }
 
+
     /**
      * method to stop count down timer
      */
     private void stopCountDownTimer() {
+        timerStatus = TimerStatus.STOPPED;
         countDownTimer.cancel();
+        countDownTimer = null;
+
     }
 
     /**
@@ -183,6 +226,14 @@ public class ArithTest
         progressBarCircle.setMax((int) timeCountInMilliSeconds / 1000);
         progressBarCircle.setProgress((int) timeCountInMilliSeconds / 1000);
 
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (timerStatus == TimerStatus.STARTED)
+            snooze();
     }
 }
 
