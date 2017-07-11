@@ -4,10 +4,13 @@ import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -55,23 +58,28 @@ public class ArithTest
         this.snooze_time = AddAlarm.snooze;
 
         i = 0;
+        Typeface heading=Typeface.createFromAsset(getAssets(),"fonts/Raleway-SemiBold.ttf");
+        alert.setTypeface(heading);
         set();
     }
 
     // setup player
     private MediaPlayer setPlayer(MediaPlayer player) {
-        switch ((int) Math.random() * 10 % 3) {
+        int m=(int)(Math.random() * 10 % 3);
+        Log.e("mediaPlayer", "m= "+m);
+        switch (m) {
             case 0:
                 player = MediaPlayer.create(ArithTest.this, R.raw.tone1);
                 break;
             case 1:
-                player = MediaPlayer.create(ArithTest.this, R.raw.tone1);
+                player = MediaPlayer.create(ArithTest.this, R.raw.tone2);
                 break;
             case 2:
-                player = MediaPlayer.create(ArithTest.this, R.raw.tone1);
+                player = MediaPlayer.create(ArithTest.this, R.raw.tone3);
                 break;
             default:
                 player = MediaPlayer.create(ArithTest.this, R.raw.tone1);
+
         }
         player.start();
         player.setVolume(1, 1);
@@ -112,7 +120,6 @@ public class ArithTest
                 break;
 
         }
-        Toast.makeText(this, "res " + result, Toast.LENGTH_SHORT).show();
 
 
     }
@@ -125,16 +132,17 @@ public class ArithTest
             timerStatus = TimerStatus.STOPPED;
             NotificationManager notificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
             notificationManager.cancelAll();
-            this.dismiss = Calendar.getInstance().getTimeInMillis();
+
             this.time = (this.time % 86400000L / 60000L);
-            this.dismiss = (this.dismiss % 86400000L / 60000L);
-            if (new DbAdapter(this).insert(this.time, this.dismiss) > 0L) {
-                Toast.makeText(this, "inserted " + this.time + "  " + this.dismiss, Toast.LENGTH_SHORT).show();
-            } else
-                Toast.makeText(ArithTest.this, "NOT inserted " + time, Toast.LENGTH_SHORT).show();
             if (AddAlarm.repeat)
                 repeatAlarm();
-
+            else
+            {
+                SharedPreferences preferences=getSharedPreferences("time",MODE_PRIVATE);
+                SharedPreferences.Editor editor=preferences.edit();
+                editor.putBoolean("status",false);
+                editor.commit();
+            }
             finish();
 
         } else {
@@ -170,7 +178,7 @@ public class ArithTest
     private void snooze() {
         mediaPlayer.stop();
         long time=Calendar.getInstance().getTimeInMillis() + 60000 * snooze_time;
-
+        AddAlarm.setNotification(ArithTest.this, time);
         Toast.makeText(this, "ALARM SNOOZED FOR " + this.snooze_time + " MINS", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(ArithTest.this, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(ArithTest.this, 0, intent, 0);

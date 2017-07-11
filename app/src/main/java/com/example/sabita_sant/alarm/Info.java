@@ -1,5 +1,6 @@
 package com.example.sabita_sant.alarm;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,11 +9,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class Info extends AppCompatActivity implements View.OnTouchListener  {
 
     float release;
     float touch;
+    TextView about_tx;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +23,10 @@ public class Info extends AppCompatActivity implements View.OnTouchListener  {
         getFragmentManager().beginTransaction().replace(R.id.clkContainer, new Analog()).commit();
         ViewGroup viewGroup = (ViewGroup) findViewById(R.id.parent);
         viewGroup.setOnTouchListener(this);
+        about_tx= (TextView) findViewById(R.id.about);
+        Typeface heading=Typeface.createFromAsset(getAssets(),"fonts/Raleway-SemiBold.ttf");
+        about_tx.setTypeface(heading);
+
 
     }
     @Override

@@ -29,12 +29,11 @@ public class AlarmReceiver
                 .setContentTitle(title)
                 .setContentText(msg)
                 .setSmallIcon(R.drawable.icon)
-                .addAction(R.drawable.snooze,"Snooze",pending_back);//change pending_back to snooze alarm
+                .addAction(R.drawable.snooze,"Stop",pending_back);//change pending_back to snooze alarm
         notiBuilder.setContentIntent(pending_back);
         notiBuilder.setAutoCancel(true);
         notiBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND);
-        notiBuilder.setContentIntent(pending_back
-        );
+        notiBuilder.setContentIntent(pending_back);
         notiBuilder.setAutoCancel(true);
         notiBuilder.setDefaults(1);
         this.notificationManager.notify(1, notiBuilder.build());
