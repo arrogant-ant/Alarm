@@ -1,10 +1,12 @@
-package com.example.sabita_sant.alarm;
+package iris.example.sabita_sant.alarm;
 
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.example.sabita_sant.alarm.R;
 
 public class Splash extends AppCompatActivity {
 

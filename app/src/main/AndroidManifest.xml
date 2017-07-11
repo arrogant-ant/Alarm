@@ -15,23 +15,24 @@
         android:label="@string/app_name"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:debuggable="false">
         <activity
-            android:name=".AddAlarm"
+            android:name="iris.example.sabita_sant.alarm.AddAlarm"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AlarmTheme" >
 
         </activity>
 
-        <receiver android:name=".AlarmReceiver" />
+        <receiver android:name="iris.example.sabita_sant.alarm.AlarmReceiver" />
 
-        <activity android:name=".ArithTest" />
+        <activity android:name="iris.example.sabita_sant.alarm.ArithTest" />
         <activity
-            android:name=".Info"
+            android:name="iris.example.sabita_sant.alarm.Info"
             android:label="@string/title_activity_info" >
         </activity>
-        <activity android:name=".Splash" >
+        <activity android:name="iris.example.sabita_sant.alarm.Splash" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

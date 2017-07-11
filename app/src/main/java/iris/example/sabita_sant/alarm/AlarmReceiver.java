@@ -1,13 +1,14 @@
-package com.example.sabita_sant.alarm;
+package iris.example.sabita_sant.alarm;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+
+import com.example.sabita_sant.alarm.R;
 
 public class AlarmReceiver
         extends BroadcastReceiver {
@@ -45,7 +46,7 @@ public class AlarmReceiver
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         showNotification(context,"Alarm", "IT'S " + AddAlarm.AlarmText, "tap to stop");
          Intent i=new Intent();
-        i.setClassName("com.example.sabita_sant.alarm","com.example.sabita_sant.alarm.ArithTest");
+        i.setClassName("com.example.sabita_sant.alarm","ArithTest");
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i);
 
@@ -58,7 +59,7 @@ public class AlarmReceiver
 
 /* Location:           C:\Users\Sabita_Sant\Desktop\Alarm\dex2jar-0.0.9.15\classes_dex2jar.jar
 
- * Qualified Name:     com.example.sabita_sant.alarm.AlarmReceiver
+ * Qualified Name:     AlarmReceiver
 
  * JD-Core Version:    0.7.0.1
 

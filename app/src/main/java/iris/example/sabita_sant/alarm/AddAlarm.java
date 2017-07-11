@@ -1,4 +1,4 @@
-package com.example.sabita_sant.alarm;
+package iris.example.sabita_sant.alarm;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.example.sabita_sant.alarm.R;
 
 import java.util.Calendar;
 

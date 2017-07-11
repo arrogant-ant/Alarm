@@ -1,4 +1,4 @@
-package com.example.sabita_sant.alarm;
+package iris.example.sabita_sant.alarm;
 
 import android.app.AlarmManager;
 import android.app.NotificationManager;
@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.sabita_sant.alarm.R;
 
 import java.util.Calendar;
 
@@ -249,7 +251,7 @@ public class ArithTest
 
 /* Location:           C:\Users\Sabita_Sant\Desktop\Alarm\dex2jar-0.0.9.15\classes_dex2jar.jar
 
- * Qualified Name:     com.example.sabita_sant.alarm.ArithTest
+ * Qualified Name:     ArithTest
 
  * JD-Core Version:    0.7.0.1
 

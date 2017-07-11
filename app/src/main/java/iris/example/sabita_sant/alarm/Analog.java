@@ -1,10 +1,12 @@
-package com.example.sabita_sant.alarm;
+package iris.example.sabita_sant.alarm;
 
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.sabita_sant.alarm.R;
 
 /**
  * Created by Sabita_Sant on 08/10/16.

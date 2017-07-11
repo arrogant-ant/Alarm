@@ -1,4 +1,4 @@
-package com.example.sabita_sant.alarm;
+package iris.example.sabita_sant.alarm;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
